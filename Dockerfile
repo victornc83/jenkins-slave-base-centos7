@@ -50,12 +50,6 @@ RUN yum install -y centos-release-scl-rh && \
     unlink /usr/share/man/man1/tnameserv.1.gz && \
     unlink /usr/share/man/man1/unpack200.1.gz
 
-# Install AWS-CLI tool
-RUN curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip" && \
-    unzip awscli-bundle.zip && \
-    ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws && \
-    rm -rf awscli-bundle*  
-
 # Copy the entrypoint
 ADD contrib/bin/* /usr/local/bin/
 
