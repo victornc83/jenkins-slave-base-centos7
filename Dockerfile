@@ -8,7 +8,7 @@ ENV OPENSHIFT_ORIGIN_CLIENT_URL=https://github.com/openshift/origin/releases/dow
 USER root
 # Install headless Java
 RUN yum install -y centos-release-scl-rh && \
-    INSTALL_PKGS="bc gettext git java-1.8.0-openjdk-headless java-1.8.0-openjdk-headless.i686 lsof rsync tar unzip which zip" && \
+    INSTALL_PKGS="bc gettext git java-1.8.0-openjdk-headless java-1.8.0-openjdk-headless.i686 lsof rsync tar unzip bzip2 which zip" && \
     yum install -y --setopt=tsflags=nodocs install $INSTALL_PKGS && \
     rpm -V $INSTALL_PKGS && \
     yum clean all && \
@@ -49,6 +49,12 @@ RUN yum install -y centos-release-scl-rh && \
     unlink /usr/share/man/man1/servertool.1.gz && \
     unlink /usr/share/man/man1/tnameserv.1.gz && \
     unlink /usr/share/man/man1/unpack200.1.gz
+
+    # Install AWS-CLI tool
+    RUN curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip" && \
+        unzip awscli-bundle.zip && \
+        ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws && \
+        rm -rf awscli-bundle*
 
 # Copy the entrypoint
 ADD contrib/bin/* /usr/local/bin/
